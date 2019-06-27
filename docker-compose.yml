@@ -1,0 +1,40 @@
+version: "3.4"
+services:
+    mysql:
+        restart: always
+        image: 'mysql:5.7'
+        volumes:
+            - mysql:/var/lib/mysql/
+        environment:
+            MYSQL_ROOT_PASSWORD: mysqlrootpassword
+        networks:
+            - app
+
+    php-fpm:
+        restart: always
+        build:
+            context: ./app/
+            target: php-fpm
+        networks:
+          - app
+        depends_on:
+            - mysql
+
+    nginx:
+        restart: always
+        build:
+            context: ./app/
+            target: nginx
+        ports:
+            - '80:80'
+        networks:
+            - app
+        depends_on:
+            - mysql
+            - php-fpm
+
+volumes:
+    mysql:
+
+networks:
+    app:
