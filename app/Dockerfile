@@ -1,4 +1,4 @@
-FROM php:7.3-fpm-alpine AS php-fpm
+FROM php:7.3-fpm-stretch AS php-fpm
 
 COPY ./public/index.php /app/public/
 
